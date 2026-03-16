@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 100
+
+char stack[MAX];
+char queue[MAX];
+int top = -1;
+int front = 0, rear = -1;
+
+// Push into stack
+void push(char ch) {
+    stack[++top] = ch;
+}
+
+// Pop from stack
+char pop() {
+    return stack[top--];
+}
+
+// Enqueue into queue
+void enqueue(char ch) {
+    queue[++rear] = ch;
+}
+
+// Dequeue from queue
+char dequeue() {
+    return queue[front++];
+}
+
+int main() {
+    char str[MAX];
+    int i, len, flag = 1;
+
+    printf("Enter a string: ");
+    scanf("%s", str);
+
+    len = strlen(str);
+
+    // Insert characters into stack and queue
+    for(i = 0; i < len; i++) {
+        push(str[i]);
+        enqueue(str[i]);
+    }
+
+    // Compare dequeue and pop
+    for(i = 0; i < len; i++) {
+        if(pop() != dequeue()) {
+            flag = 0;
+            break;
+        }
+    }
+
+    if(flag)
+        printf("Palindrome (Queue FIFO vs Stack LIFO matched)\n");
+    else
+        printf("Not a Palindrome\n");
+
+    return 0;
+}
