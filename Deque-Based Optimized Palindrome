@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 100
+
+char deque[MAX];
+int front = 0, rear = -1;
+
+// Insert at rear
+void insertRear(char ch) {
+    deque[++rear] = ch;
+}
+
+// Delete from front
+char deleteFront() {
+    return deque[front++];
+}
+
+// Delete from rear
+char deleteRear() {
+    return deque[rear--];
+}
+
+int main() {
+    char str[MAX];
+    int i, len, flag = 1;
+
+    printf("Enter a string: ");
+    scanf("%s", str);
+
+    len = strlen(str);
+
+    // Insert characters into deque
+    for(i = 0; i < len; i++) {
+        insertRear(str[i]);
+    }
+
+    // Compare front and rear
+    while(front < rear) {
+        if(deleteFront() != deleteRear()) {
+            flag = 0;
+            break;
+        }
+    }
+
+    if(flag)
+        printf("The string is a Palindrome\n");
+    else
+        printf("The string is Not a Palindrome\n");
+
+    return 0;
+}
