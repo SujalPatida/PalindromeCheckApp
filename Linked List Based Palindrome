@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Node {
+    char data;
+    struct Node* next;
+};
+
+// Create new node
+struct Node* createNode(char ch) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = ch;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Reverse linked list
+struct Node* reverse(struct Node* head) {
+    struct Node *prev = NULL, *current = head, *next = NULL;
+
+    while(current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    return prev;
+}
+
+int main() {
+    char str[100];
+    struct Node *head = NULL, *temp = NULL, *slow, *fast;
+    struct Node *secondHalf, *revHead;
+
+    printf("Enter a string: ");
+    scanf("%s", str);
+
+    int len = strlen(str);
+
+    // Convert string to linked list
+    for(int i = 0; i < len; i++) {
+        struct Node* newNode = createNode(str[i]);
+        if(head == NULL) {
+            head = newNode;
+            temp = head;
+        } else {
+            temp->next = newNode;
+            temp = newNode;
+        }
+    }
+
+    // Find middle using fast & slow pointer
+    slow = head;
+    fast = head;
+
+    while(fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    // Reverse second half
+    secondHalf = slow;
+    revHead = reverse(secondHalf);
+
+    // Compare halves
+    temp = head;
+    while(revHead != NULL) {
+        if(temp->data != revHead->data) {
+            printf("Not a Palindrome\n");
+            return 0;
+        }
+        temp = temp->next;
+        revHead = revHead->next;
+    }
+
+    printf("The string is a Palindrome\n");
+
+    return 0;
+}
