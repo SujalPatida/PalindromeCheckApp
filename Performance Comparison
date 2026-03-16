@@ -1,0 +1,68 @@
+import java.util.*;
+
+public class PalindromePerformance {
+
+    static boolean arrayMethod(String str) {
+        str = str.replaceAll("\\s+", "").toLowerCase();
+        int start = 0, end = str.length() - 1;
+        while (start < end) {
+            if (str.charAt(start) != str.charAt(end))
+                return false;
+            start++;
+            end--;
+        }
+        return true;
+    }
+
+    static boolean stackMethod(String str) {
+        str = str.replaceAll("\\s+", "").toLowerCase();
+        Stack<Character> stack = new Stack<>();
+        for (char c : str.toCharArray())
+            stack.push(c);
+        for (char c : str.toCharArray())
+            if (c != stack.pop())
+                return false;
+        return true;
+    }
+
+    static boolean dequeMethod(String str) {
+        str = str.replaceAll("\\s+", "").toLowerCase();
+        Deque<Character> deque = new ArrayDeque<>();
+        for (char c : str.toCharArray())
+            deque.addLast(c);
+        while (deque.size() > 1)
+            if (!deque.removeFirst().equals(deque.removeLast()))
+                return false;
+        return true;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a string: ");
+        String input = sc.nextLine();
+
+        long start, end;
+
+        start = System.nanoTime();
+        boolean r1 = arrayMethod(input);
+        end = System.nanoTime();
+        long t1 = end - start;
+
+        start = System.nanoTime();
+        boolean r2 = stackMethod(input);
+        end = System.nanoTime();
+        long t2 = end - start;
+
+        start = System.nanoTime();
+        boolean r3 = dequeMethod(input);
+        end = System.nanoTime();
+        long t3 = end - start;
+
+        System.out.println("Array Method: " + r1 + " Time: " + t1 + " ns");
+        System.out.println("Stack Method: " + r2 + " Time: " + t2 + " ns");
+        System.out.println("Deque Method: " + r3 + " Time: " + t3 + " ns");
+
+        sc.close();
+    }
+}
